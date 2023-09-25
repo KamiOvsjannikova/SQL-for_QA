@@ -56,7 +56,7 @@ WHERE salary > 1000
 -- 10000] и у них commission_pct не null
 
 SELECT
-first_name,
+    first_name,
     last_name,
     salary
 FROM Employees 
