@@ -54,10 +54,11 @@ WHERE salary > 1000
 
 -- 10. вывести имя, фамилию и зарплату тех сотрудников, у которых зарплата в интервале [8000; 
 -- 10000] и у них commission_pct не null
+
 SELECT
-	first_name,
+first_name,
     last_name,
     salary
 FROM Employees 
 WHERE salary between 8000 and 10000 
-AND commission_pct is not NULL;
+  AND commission_pct is not NULL;
