@@ -142,3 +142,31 @@ LEFT Join (
     GROUP BY customer_id
 ) t2
 ON t1.id = t2.customer_id; 
+
+-- 9. написать запрос, который выводит имя и фамилию покупателя 
+-- кол-во его не оплаченных заказов
+-- кол-во его оплаченных заказов
+SELECT
+	t1.first_name,
+    t1.last_name,
+    COALESCE(t2.cnt, 0) AS not_paid_cnt,
+	COALESCE(t2.cnt, 0) AS paid_cnt
+FROM customers t1
+LEFT Join (
+	SELECT
+		customer_id,
+        count(id) AS cnt
+	FROM orders
+    WHERE paid_flg = 'N'
+    GROUP BY customer_id
+) t2
+ON t1.id = t2.customer_id
+LEFT Join (
+	SELECT
+		customer_id,
+        count(id) AS cnt
+	FROM orders
+    WHERE paid_flg = 'N'
+    GROUP BY customer_id
+) t3
+ON t1.id = t3.customer_id; 
