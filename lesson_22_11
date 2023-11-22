@@ -1,0 +1,121 @@
+-- CASE
+
+-- 1. Вывести имя/фамилию покупателя и сформировать поле age_category, в котором для каждого покупателя подставится значение в соответствии с его возрастом.
+-- Если покупателю до 21 (вкл) - young
+-- Если покупателю от 22 до 30 (вкл) - middle
+-- Если покупателю от 30 - adult
+
+select
+	first_name,
+    last_name,
+    case
+    	when age <= 21 then 'young'
+        when age between 22 and 30 then 'middle'
+        else 'adult'
+    end as age_category
+from customers;
+
+
+-- ПРАКТИКА (БД hr)
+
+use hr;
+
+-- 1. Разделить всех сотрудников на классы по зарплате. 
+-- Если сотрудник получает меньше 10 тыс, то обозначить его класс как 'low'. 
+-- Если между 10 и 20 тыс (вкл) - 'middle'
+-- Если больше 20 тыс - 'high'
+-- Вывести имя/фамилию, зп и поле salary_class
+
+select
+	first_name,
+    last_name,
+    case
+		when salary < 10000 then 'low'
+        when salary between 10000 and 20000 then 'middle'
+        else 'high'
+    end as salary_class
+from employees;
+	
+
+-- 2. Разделить всех сотрудников по фамилии.
+-- Если фамилия содержит букву A, то сотрудник войдет в группу 'A' 
+-- Если фамилия не содержит букву A, то сотрудник войдет в группу 'B' 
+-- Вывести имя/фамилию и поле lastname_class
+
+select
+	first_name,
+    last_name,
+    case
+		when last_name like '%a%' then 'A'
+        else 'B'
+    end as lastname_class
+from employees;
+
+
+-- 3. Найти сумму зп тех сотрудников, кто зарабатывает больше 10000
+-- Вывести одно значение - sum
+-- Предложить два варианта решения
+
+
+select
+	sum(salary) as sum
+from employees
+where salary > 10000;
+
+select
+	sum(
+		case
+			when salary > 10000 then salary
+            else 0
+        end
+    ) as sum
+from employees;
+
+
+
+-- 4. Найти среднее значение зп среди тех сотрудников, кто зарабатывает меньше 10000
+-- Вывести одно значение - avg_salary
+-- Предложить два варианта решения
+
+select
+	round(avg(salary)) as avg_salary
+from employees
+where salary < 10000;
+
+select
+	avg(
+		case
+			when salary < 10000 then salary
+            else null
+        end
+    ) as avg_salary
+from employees;
+
+
+-- 5. Найти кол-во сотрудников с зп выше 10000
+-- Вывести одно значение - employees_cnt
+
+select
+	count(*) as employees_cnt
+from employees
+where salary > 10000;
+
+select
+	count(
+		case
+			when salary > 10000 then 1
+        end
+    ) as employees_cnt
+from employees;
+
+
+
+-- ДЗ
+
+-- *1. Найти департаменты в которых есть работники, зарабатывающие больше 10 000. 
+-- В результате выборки формируются два поля (department_id и поле со значениями 1 или 0). 
+-- 1 - если в департаменте есть хотя бы один сотрудник с зп больше 10000, 0 - если таких сотрудников нет
+
+-- *2. Найти департаменты в которых ВСЕ работники зарабатывают больше 10 000. 
+-- В результате выборки формируются два поля (department_id и поле со значениями 1 или 0)
+-- 1 - если в департаменте ВСЕ сотрудники имеют зп больше 10000, 0 - если не все
