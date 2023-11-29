@@ -1,0 +1,65 @@
+В рамках БД "песочница" напишите след/запросы:
+
+1.Вывести клиентов не из Germany, имена которых начинаются на букву A
+
+SELECT *
+FROM Customers
+WHERE country not in ('Germany') AND CustomerName LIKE 'A%';
+
+2.Вывести данные о заказах клиентов 1, 2, 5 (проекция: номерзаказа, названиекомпании_перевозчика)
+
+
+SELECT 
+     t1.OrderID, 
+     t2.ShipperName
+FROM Orders t1
+INNER JOIN Shippers t2
+ON t1.CustomerID = t2.CustomerID
+WHERE CustomerID IN (1, 2, 5);
+
+
+
+
+3.Вывести данные о заказах клиентов не из France (проекция: номерзаказа, имяклиента, фамилия_менеджера)
+
+
+FROM Customers t1
+INNER JOIN Orders t2
+ON t1.CustomerId=t2.CustomerID
+INNER JOIN Employees t3
+ON t2.EmployeeID=t3.EmployeeID
+WHERE t1.Country!="France";
+
+
+4.Вывести ср/стоимость товаров от поставщика 4
+
+SELECT 
+AVG (t1.Price) AS avg_price
+FROM Products t1
+INNER JOIN Suppliers t2
+ON t1.SupplierID=t2.SupplierID
+WHERE t1.SupplierID=4
+
+SELECT 
+     AVG(Price) AS average_price
+FROM Products
+WHERE SupplierID = 4;
+
+5. Вывести один самый дешевый товар от поставщика 1
+SELECT ProductName, Price
+FROM Products
+WHERE SupplierID = 1
+ORDER BY Price
+LIMIT 1;
+
+
+Зачем нужна проекция в БД. Дайте короткий ответ
+
+Проекция нужна в БД, для выбора конкретных столбцов из таблицы, которые позволяет уменьшить объем данных и улучшить производительность запросов, также сокращая необходимость передачи избыточной информации. Проекция помогает сделать запросы более эффективными и экономит ресурсы системы.
+
+
+
+
+
+
+
